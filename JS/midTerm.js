@@ -1,7 +1,4 @@
-/* =====================
-Leaflet Configuration
-===================== */
-
+//MAP SETUP
 var map = L.map('map', {
   center: [40.000, -75.1090],
   zoom: 11
@@ -13,3 +10,9 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
   maxZoom: 20,
   ext: 'png'
 }).addTo(map);
+
+//CALLING DATA
+var dataset;
+var promise = $.ajax("https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/litter_index_lines.geojson")
+.then(function(res) { dataset = JSON.parse(res);})
+.then(function() {console.log(dataset);});
