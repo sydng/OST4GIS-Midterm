@@ -1,0 +1,45 @@
+body {
+    padding: 0;
+    overflow: hidden;
+    font-family: colfax, helvetica, arial, sans-serif;
+}
+
+p.main {
+  font-size: 24px;
+  color: darkgray;
+}
+
+h1 {
+  font-family: sans-serif;
+  color: darkgray;
+}
+
+.map {
+    position: absolute;
+    right: 0px;
+    left: 400px;
+    height: 100%;
+    top: 0;
+}
+
+.sidebar {
+    position: absolute;
+    left: 0px;
+    width: 400px;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 20px;
+    font-size: 16px;
+    background-color: white;
+}
+
+.legend {
+  position: absolute;
+  background-color: #fff;
+  padding: 15px;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2000;
+  text-align: right;
+}
