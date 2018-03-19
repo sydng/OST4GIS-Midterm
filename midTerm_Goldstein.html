@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <!-- CSS Imports -->
-    <link rel="stylesheet" href="css/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css"
+      integrity="sha256-iYUgmrapfDGvBrePJPrMWQZDcObdAcStKBpjP3Az+3s=" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -25,37 +26,56 @@
         <p>On this page, you can filter data by street type and click on <br>the
           street segements to determine the litter index.</p>
           <select>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="mercedes">Mercedes</option>
-            <option value="audi">Audi</option>
+            <option value="Major Arterials">Major Arterials</option>
+            <option value="Minor Arterials">Minor Arterials</option>
+            <option value="mercedes">Collector Streets</option>
           </select>
-        <p>The following pages will explore how litter changes along Philadelphia's main arterials.</p>
+        <p>You'll notice that the litter index varies even on streets of <br>the same type.</p>
+        <p>The following pages will explore how litter changes along Philadelphia's streets.</p>
         <button id="Next-1">NEXT</button>
       </div>
       <div id="slide-1" style="display: none;">
         <h1>Philadelphia's Litter:<br>A Big Problem for the City</h1>
         <h3>Streets with A High Litter Index</h3>
-        <p>Showing all streets with high litter index....
-        but how many of them are major arterials?</p>
+        <p>A streets' litter index can range between 1 and 4, with 1 <br>
+          being the lowest block score and 4 being the highest. <br>These streets have
+          a litter index of greater than 3.</p>
+        <p>Streets with a high litter index are pretty well dispersed throughout the city,
+          which shows that the litter problem is <br>not any one neighborhood's issue. However,
+          there does <br>appear to be a large concentration of streets a  high litter <br>
+          index in North Central Philadelphia.</p>
         <button id="Previous-1">PREVIOUS</button>
         <button id="Next-2">NEXT</button>
       </div>
       <div id="slide-2" style="display: none;">
-        <h1>Major Arterial Streets with High Litter Index</h1>
-        <p>Showing major aterials...</p>
+        <h1>Philadelphia's Litter:<br>A Big Problem for the City</h1>
+        <h3>Major Arterial Streets with A High Litter Index</h3>
+        <p>There are few major arterials in Philadelphia with a high <br>litter index. An arterial road
+          is a high capacity road, which <br>most likely has higher speed limits. Therefore, the few
+          <br>number of major aterial roads with high litter indexes could <br>be attributed to
+          less pedestrian traffic. </p>
         <button id="Previous-2">PREVIOUS</button>
         <button id="Next-3">NEXT</button>
       </div>
       <div id="slide-3" style="display: none;">
-        <h1>Major Arterial Streets with Low Litter Index</h1>
-        <p>In comparison, these are the major streets in Philadelphia
-        with a low litter index.</p>
+        <h1>Philadelphia's Litter:<br>A Big Problem for the City</h1>
+        <h3>Collector Streets with A High Litter Index</h3>
+        <p>In comparison, there are many more collector streets that <br>have a high litter index.
+          This could be the result of two <br>things:
+          <ol>
+            <li>There are more collector streets, and therefore, by just number alone there are more chances for
+              collector <br>streets to have litter</li>
+            <li>Collector streets are used to access residential areas. <br>Lack of residential garbage collection -
+              i.e. people leaving garbage bags on the sidewalk until pick up - may be contributing to the high
+              litter index along these streets.</li>
+          </ol>
+        </p>
         <button id="Previous-3">PREVIOUS</button>
         <button id="Next-4">NEXT</button>
       </div>
       <div id="slide-4" style="display: none;">
-        <h1>Location of Commercial Corridors</h1>
+        <h1>Philadelphia's Litter:<br>A Big Problem for the City</h1>
+        <h3>Location of Commercial Corridors</h3>
         <p>FILL IN TEXT HERE</p>
         <button id="Previous-4">PREVIOUS</button>
         <button id="Next-5">NEXT</button>
@@ -75,7 +95,8 @@
     <!-- Javascript Imports -->
     <script src="js/jquery-2.2.0.js"></script>
     <script src="js/underscore.js"></script>
-    <script src="js/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"
+        integrity="sha256-CNm+7c26DTTCGRQkM9vp7aP85kHFMqs9MhPEuytF+fQ=" crossorigin="anonymous"></script>
     <script src="js/midTerm.js"></script>
   </body>
 </html>

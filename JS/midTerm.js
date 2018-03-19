@@ -15,20 +15,22 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
 var startingData;
 //var majorArterials;
 var highIndex;
-var nextSlide2;
+var highArterials;
+var highCollectors;
+var lowArterials;
 
 var promise = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/litter_index_lines.geojson";
 
 //FUNCTIONS FOR FILTERING DATA
-var lowscoreFilter = function(feature) {
-  if(feature.properties.hundred_block_score <= 1 &&
-     feature.properties.street_class == 2) {
+
+var highscoreFilter = function(feature) {
+  if(feature.properties.hundred_block_score > 3 && feature.properties.street_class == 2) {
           return feature;
       }
 };
 
-var highscoreFilter = function(feature) {
-  if(feature.properties.hundred_block_score > 3 && feature.properties.street_class == 2) {
+var highscoreCollector = function(feature) {
+  if(feature.properties.hundred_block_score > 3 && feature.properties.street_class == 4) {
           return feature;
       }
 };
@@ -113,41 +115,105 @@ $(document).ready(function() {
       startingData = L.geoJson(parsedData, {
         color: "lightgray",
         filter: stInterest
-      })//.bindPopup(function(layer) {
-          //return layer.feature.properties.hundred_block_score;})
-          .addTo(map);
+      }).bindPopup(function(layer) {
+          return layer.feature.properties.hundred_block_score.toString();
+        }).addTo(map);
 
       $("#Next-1").click(function() {
-        majorArterials = L.geoJson(parsedData, {
+        highIndex = L.geoJson(parsedData, {
           color: "red",
           filter: hIndex
         }).addTo(map);
-
         startingData.clearLayers();  //remove previous layers
-
         showSlide1();
       });
 
       $("#Next-2").click(function() {
-        nextSlide = L.geoJson(parsedData, {
-          color: "black",
+        highArterials= L.geoJson(parsedData, {
+          color: "magenta",
           filter: highscoreFilter
         }).addTo(map);
-
-        majorArterials.clearLayers();  //remove previous layers
-
+        highIndex.clearLayers();  //remove previous layers
         showSlide2();
       });
 
       $("#Next-3").click(function() {
-        nextSlide2 = L.geoJson(parsedData, {
-          color: "green",
-          filter: lowscoreFilter
+        highCollectors = L.geoJson(parsedData, {
+          color: "pink",
+          filter: highscoreCollector
         }).addTo(map);
-
-        nextSlide.clearLayers();  //remove previous layers
-
+        highArterials.clearLayers();  //remove previous layers
         showSlide3();
       });
+
+      $("#Next-4").click(function() {
+        //lowArterials = L.geoJson(parsedData, {
+          //color: "green",
+          //filter: lowscoreFilter
+        //}).addTo(map);
+        highCollectors.clearLayers();  //remove previous layers
+        showSlide4();
+      });
+
+      $("#Next-5").click(function() {
+        highArterials= L.geoJson(parsedData, {
+          color: "magenta",
+          filter: highscoreFilter
+        }).addTo(map);
+        highCollectors = L.geoJson(parsedData, {
+          color: "pink",
+          filter: highscoreCollector
+        }).addTo(map);
+        showSlide5();
+      });
+
+      $("#Previous-1").click(function() {
+        highIndex = L.geoJson(parsedData, {
+          color: "red",
+          filter: hIndex
+        }).addTo(map);
+        startingData.clearLayers();  //remove previous layers
+        hideSlide1();
+      });
+
+      $("#Previous-2").click(function() {
+        highArterials= L.geoJson(parsedData, {
+          color: "black",
+          filter: highscoreFilter
+        }).addTo(map);
+        highIndex.clearLayers();  //remove previous layers
+        hideSlide2();
+      });
+
+      $("#Previous-3").click(function() {
+        highCollectors = L.geoJson(parsedData, {
+          color: "green",
+          filter: highscoreCollector
+        }).addTo(map);
+        highArterials.clearLayers();  //remove previous layers
+        hideSlide3();
+      });
+
+      $("#Previous-4").click(function() {
+        //lowArterials = L.geoJson(parsedData, {
+          //color: "green",
+          //filter: lowscoreFilter
+        //}).addTo(map);
+        highCollectors.clearLayers();  //remove previous layers
+        hideSlide4();
+      });
+
+      $("#Previous-5").click(function() {
+        highArterials= L.geoJson(parsedData, {
+          color: "black",
+          filter: highscoreFilter
+        }).addTo(map);
+        highCollectors = L.geoJson(parsedData, {
+          color: "green",
+          filter: highscoreCollector
+        }).addTo(map);
+        hideSlide5();
+      });
+
     });
 });
