@@ -12,28 +12,16 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
 }).addTo(map);
 
 //CALLING DATA
-var litterIndex;
+var startingData;
 var majorArterials;
-//var recycleBank;
+var nextSlide;
+var nextSlide2;
 
 var promise = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/litter_index_lines.geojson";
 //var promise2 = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/WasteBaskets_Big_Belly.geojson";
 //var promise3 = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/recyclebank_participation.geojson";
 
-var myStyle = function(feature) {
-  switch(feature.properties.street_class) {
-    case 2: return {color: "red"};      //major arterial
-    case 3: return {color: "orange"};   //minor arterial
-    case 4: return {color: "yellow"};   //collector street
-    case 5: return {color: "purple"};   //local road
-    case 6: return {color: "blue"};
-    case 12: return {color: "white"};
-    case 13: return {color: "black"};
-    case 14: return {color: "pink"};
-    case 18: return {color: "green"};
-  }
-};
-
+//FUNCTIONS FOR FILTERING DATA
 var lowscoreFilter = function(feature) {
   if(feature.properties.hundred_block_score <= 1 &&
      feature.properties.street_class == 2) {
@@ -67,18 +55,75 @@ var arterials = function(feature) {
   }
 };
 
+//FUNCTIONS FOR CHANGING SLIDES
+var showSlide1 = function() {
+  $('#intro').hide();
+  $('#slide-1').show();
+};
+
+var showSlide2 = function() {
+  $('#slide-1').hide();
+  $('#slide-2').show();
+};
+
+var showSlide3 = function() {
+  $('#slide-2').hide();
+  $('#slide-3').show();
+};
+
 $(document).ready(function() {
-  $.ajax(promise).done(function(data) {
+    $.ajax(promise).done(function(data) {
+      var parsedData = JSON.parse(data);
+
+      startingData = L.geoJson(parsedData, {
+        color: "lightgray",
+        filter: stInterest
+      }).addTo(map);
+
+      $("#Next-1").click(function() {
+        majorArterials = L.geoJson(parsedData, {
+          color: "red",
+          filter: arterials
+        }).addTo(map);
+
+        startingData.clearLayers();  //remove previous layers
+
+        showSlide1();
+      });
+
+      $("#Next-2").click(function() {
+        nextSlide = L.geoJson(parsedData, {
+          color: "black",
+          filter: highscoreFilter
+        }).addTo(map);
+
+        majorArterials.clearLayers();  //remove previous layers
+
+        showSlide2();
+      });
+
+      $("#Next-3").click(function() {
+        nextSlide2 = L.geoJson(parsedData, {
+          color: "green",
+          filter: lowscoreFilter
+        }).addTo(map);
+
+        nextSlide.clearLayers();  //remove previous layers
+
+        showSlide3();
+      });
+    });
+  });
+
+
+  /*
+  $.ajax(promise2).done(function(data) {
     var parsedData = JSON.parse(data);
-    majorArterials = L.geoJson(parsedData, {
-      style: myStyle,
-      filter: arterials
+
+    wasteBaskets = L.geoJson(parsedData, {
+      color: "blue"
+      //filter: stInterest
     }).addTo(map);
 
-    litterIndex = L.geoJson(parsedData, {
-      color: "lightgray",
-      filter: stInterest
-    }).addTo(map);
-    //litterIndex.eachLayer(eachFeatureFunction);
   });
-});
+  */
