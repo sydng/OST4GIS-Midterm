@@ -4,20 +4,23 @@ body {
     font-family: colfax, helvetica, arial, sans-serif;
 }
 
-p.main {
-  font-size: 24px;
-  color: darkgray;
+p{
+  font-style: italic;
 }
 
 h1 {
   font-family: sans-serif;
-  color: darkgray;
+}
+
+li{
+  font-size: 15px;
+  font-style: italic;
 }
 
 .map {
     position: absolute;
     right: 0px;
-    left: 400px;
+    left: 450px;
     height: 100%;
     top: 0;
 }
@@ -25,7 +28,7 @@ h1 {
 .sidebar {
     position: absolute;
     left: 0px;
-    width: 400px;
+    width: 450px;
     top: 0;
     bottom: 0;
     overflow-y: auto;
