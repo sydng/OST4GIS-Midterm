@@ -36,13 +36,3 @@ li{
     font-size: 16px;
     background-color: white;
 }
-
-.legend {
-  position: absolute;
-  background-color: #fff;
-  padding: 15px;
-  right: 10px;
-  bottom: 10px;
-  z-index: 2000;
-  text-align: right;
-}

@@ -25,10 +25,11 @@
         </p>
         <p>On this page, you can filter data by street type and click on <br>the
           street segements to determine the litter index.</p>
-          <select>
-            <option value="Major Arterials">Major Arterials</option>
-            <option value="Minor Arterials">Minor Arterials</option>
-            <option value="mercedes">Collector Streets</option>
+          <select id="sel" type="text">
+            <option value="All">All</option>
+            <option value="Major Arterial">Major Arterial</option>
+            <option value="Minor Arterial">Minor Arterial</option>
+            <option value="Collector">Collector</option>
           </select>
         <p>You'll notice that the litter index varies even on streets of <br>the same type.</p>
         <p>The following pages will explore how litter changes along Philadelphia's streets.</p>
@@ -76,22 +77,25 @@
       <div id="slide-4" style="display: none;">
         <h1>Philadelphia's Litter:<br>A Big Problem for the City</h1>
         <h3>Location of Commercial Corridors</h3>
-        <p>FILL IN TEXT HERE</p>
+        <p>While those street segments show streets with high litter in Philadelphia, what about known high traffic areas
+          like commercial corridors?</p>
+        <p>The map to the right shows the location of commercial <br>corridors in Philadelphia. They are relatively dispersed
+          <br>around the city with a higher concentration in Center City.</p>
         <button id="Previous-4">PREVIOUS</button>
         <button id="Next-5">NEXT</button>
       </div>
       <div id="slide-5" style="display: none;">
-        <h1>Are more Commercial Corridors near High or Low Litter Indexes?</h1>
-        <p>FILL IN TEXT HERE</p>
+        <h1>Philadelphia's Litter:<br>A Big Problem for the City</h1>
+        <h3>Are more Commercial Corridors near High <br>or Low Litter Indexes?</h3>
+        <p>Interestingly, the major arterials and collector streets with a high litter index, occur in areas where commercial
+          corridors <br>are more dispersed. Noteably in North and West <br>Philadelphia. This indicates that the concentration of
+          people <br>on commercial corridors may not be the only factor that contributes to litter in those areas. There may be an
+          <br>underlying neighborhood effect.</p>
         <button id="Previous-5">PREVIOUS</button>
       </div>
     </div>
     <!-- Map -->
     <div id="map" class="map"></div>
-    <!-- Legend -->
-    <div class="legend">
-
-    </div>
     <!-- Javascript Imports -->
     <script src="js/jquery-2.2.0.js"></script>
     <script src="js/underscore.js"></script>

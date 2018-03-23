@@ -23,7 +23,26 @@ var corridors;
 var promise = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/litter_index_lines.geojson";
 var promise2 = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/Commercial_Corridors.geojson";
 
+var fitBoundsOptions = { padding: [5, 5] };
+
 //FUNCTIONS FOR FILTERING DATA
+var majorArterials = function(feature){
+  if(feature.properties.street_class == 2) {
+    return feature;
+  }
+};
+
+var minorArterials = function(feature){
+  if(feature.properties.street_class == 3) {
+    return feature;
+  }
+};
+
+var collectors = function(feature){
+  if(feature.properties.street_class == 4) {
+    return feature;
+  }
+};
 
 var highscoreFilter = function(feature) {
   if(feature.properties.hundred_block_score > 3 && feature.properties.street_class == 2) {
@@ -44,18 +63,20 @@ var hIndex = function(feature) {
 };
 
 var stInterest = function(feature) {
-  if(feature.properties.street_class == 3) {
+  if(feature.properties.street_class == 3 ||
+        feature.properties.street_class == 2 ||
+        feature.properties.street_class == 4) {
     return feature;
   }
 };
 
-//var arterials = function(feature) {
-  //if(feature.properties.street_class == 2) {
-    //return feature;
-  //}
-//};
+var zoom = function(feature) {
+    map.fitBounds(feature.getBounds(), fitBoundsOptions);
+};
 
-
+var clearing = function(feature) {
+  feature.clearLayers();
+};
 //FUNCTIONS FOR CHANGING SLIDES
 var showSlide1 = function() {
   $('#intro').hide();
@@ -108,11 +129,30 @@ var hideSlide1 = function() {
   $('#intro').show();
 };
 
+var hideLegend = function() {
+  $('#legend').hide();
+};
 
+var showLegend = function() {
+  $('#legend').show();
+};
+
+var myStyle = function(feature) {
+  switch(feature.properties.street_class_name) {
+    case "Major Arterial": return {color: "red"};
+    case "Collector": return {color: "orange"};
+    case 'Minor Arterial': return {color: "yellow"};
+    case '': return {color: "green"};
+    case 'Local': return {color: "pink"};
+    case 'City Boundary': return {color: "blue"};
+    case 'Non-travelable': return {color: "purple"};
+  }
+};
 
 $(document).ready(function() {
     $.ajax(promise).done(function(data) {
       var parsedData = JSON.parse(data);
+      var forMap;
 
       startingData = L.geoJson(parsedData, {
         color: "lightgray",
@@ -120,12 +160,52 @@ $(document).ready(function() {
       }).bindPopup(function(layer) {
           return layer.feature.properties.hundred_block_score.toString();
         }).addTo(map);
-
+      zoom(startingData);
+      hideLegend();
+/*
+      $('#sel').change(function() {
+        startingData.clearLayers();
+        if ($('#sel').val() == "Major Arterial") {
+          forMap = L.geoJson(parsedData, {
+            color: "lightgray",
+            filter: majorArterials
+          }).bindPopup(function(layer) {
+              return layer.feature.properties.hundred_block_score.toString();
+            }).addTo(map);
+        } else if($('#sel').val() == "Minor Arterial") {
+          forMap = L.geoJson(parsedData, {
+            color: "lightgray",
+            filter: minorArterials
+          }).bindPopup(function(layer) {
+              return layer.feature.properties.hundred_block_score.toString();
+            }).addTo(map);
+        } else if($('#sel').val() == "Collector") {
+          forMap = L.geoJson(parsedData, {
+            color: "lightgray",
+            filter: collectors
+          }).bindPopup(function(layer) {
+              return layer.feature.properties.hundred_block_score.toString();
+            }).addTo(map);
+        } else {
+          startingData = L.geoJson(parsedData, {
+            color: "lightgray",
+            filter: stInterest
+          }).bindPopup(function(layer) {
+              return layer.feature.properties.hundred_block_score.toString();
+            }).addTo(map);
+        }
+        //map.removeLayer(forMap);
+        //forMap.clearLayers();
+        return forMap;
+      });
+*/
       $("#Next-1").click(function() {
         highIndex = L.geoJson(parsedData, {
           color: "red",
           filter: hIndex
         }).addTo(map);
+        zoom(highIndex);
+        //forMap.clearLayers();
         startingData.clearLayers();  //remove previous layers
         showSlide1();
       });
@@ -150,10 +230,11 @@ $(document).ready(function() {
 
       $("#Next-4").click(function() {
         $.ajax(promise2).done(function(data) {
-          var parsedData = JSON.parse(data);
-        corridors = L.geoJson(parsedData, {
+          var data2 = JSON.parse(data);
+        corridors = L.geoJson(data2, {
           color: "gray"
         }).addTo(map);
+        zoom(corridors);
         highCollectors.clearLayers();  //remove previous layers
         showSlide4();
       });
@@ -177,6 +258,7 @@ $(document).ready(function() {
         }).bindPopup(function(layer) {
             return layer.feature.properties.hundred_block_score.toString();
           }).addTo(map);
+        zoom(startingData);
         highIndex.clearLayers();  //remove previous layers
         hideSlide1();
       });
@@ -186,6 +268,7 @@ $(document).ready(function() {
           color: "red",
           filter: hIndex
         }).addTo(map);
+        zoom(highIndex);
         highArterials.clearLayers();  //remove previous layers
         hideSlide2();
       });
@@ -200,6 +283,10 @@ $(document).ready(function() {
       });
 
       $("#Previous-4").click(function() {
+        highIndex = L.geoJson(parsedData, {
+          filter: hIndex
+        });
+        zoom(highIndex);
         highCollectors = L.geoJson(parsedData, {
           color: "#800000",
           filter: highscoreCollector
@@ -213,7 +300,6 @@ $(document).ready(function() {
         highCollectors.clearLayers();
         hideSlide5();
       });
-
     });
   });
 });
