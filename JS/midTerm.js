@@ -13,12 +13,14 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
 
 //CALLING DATA
 var startingData;
-//var majorArterials;
 var highIndex;
 var highArterials;
 var highCollectors;
 var lowArterials;
 var corridors;
+var majArts;
+var minArts;
+var collectors;
 
 var promise = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/litter_index_lines.geojson";
 var promise2 = "https://raw.githubusercontent.com/sydng/OST4GIS-Midterm/master/Commercial_Corridors.geojson";
@@ -74,9 +76,11 @@ var zoom = function(feature) {
     map.fitBounds(feature.getBounds(), fitBoundsOptions);
 };
 
-var clearing = function(feature) {
-  feature.clearLayers();
+var clearFunc;
+var clearSegments = function() {
+  if (_.isFunction(clearFunc)) { clearFunc(); } else { console.log("no clearing function defined"); }
 };
+
 //FUNCTIONS FOR CHANGING SLIDES
 var showSlide1 = function() {
   $('#intro').hide();
@@ -152,7 +156,26 @@ var myStyle = function(feature) {
 $(document).ready(function() {
     $.ajax(promise).done(function(data) {
       var parsedData = JSON.parse(data);
-      var forMap;
+      majArts = L.geoJson(parsedData, {
+        color: "lightgray",
+        filter: majorArterials
+      }).bindPopup(function(layer) {
+        return layer.feature.properties.hundred_block_score.toString();
+      });
+
+      minArts = L.geoJson(parsedData, {
+        color: "lightgray",
+        filter: collectors
+      }).bindPopup(function(layer) {
+        return layer.feature.properties.hundred_block_score.toString();
+      });
+
+      collector = L.geoJson(parsedData, {
+        color: "lightgray",
+        filter: minorArterials
+      }).bindPopup(function(layer) {
+        return layer.feature.properties.hundred_block_score.toString();
+      });
 
       startingData = L.geoJson(parsedData, {
         color: "lightgray",
@@ -162,51 +185,36 @@ $(document).ready(function() {
         }).addTo(map);
       zoom(startingData);
       hideLegend();
-/*
+
       $('#sel').change(function() {
         startingData.clearLayers();
         if ($('#sel').val() == "Major Arterial") {
-          forMap = L.geoJson(parsedData, {
-            color: "lightgray",
-            filter: majorArterials
-          }).bindPopup(function(layer) {
-              return layer.feature.properties.hundred_block_score.toString();
-            }).addTo(map);
+          clearSegments();
+          majArts.addTo(map);
+          clearFunc = function() { map.removeLayer(majArts); };
         } else if($('#sel').val() == "Minor Arterial") {
-          forMap = L.geoJson(parsedData, {
-            color: "lightgray",
-            filter: minorArterials
-          }).bindPopup(function(layer) {
-              return layer.feature.properties.hundred_block_score.toString();
-            }).addTo(map);
+          clearSegments();
+          minArts.addTo(map);
+          clearFunc = function() { map.removeLayer(minArts); };
         } else if($('#sel').val() == "Collector") {
-          forMap = L.geoJson(parsedData, {
-            color: "lightgray",
-            filter: collectors
-          }).bindPopup(function(layer) {
-              return layer.feature.properties.hundred_block_score.toString();
-            }).addTo(map);
+          clearSegments();
+          collector.addTo(map);
+          clearFunc = function() { map.removeLayer(collector); };
         } else {
-          startingData = L.geoJson(parsedData, {
-            color: "lightgray",
-            filter: stInterest
-          }).bindPopup(function(layer) {
-              return layer.feature.properties.hundred_block_score.toString();
-            }).addTo(map);
+          clearSegments();
+          startingData.addTo(map);
+          clearFunc = function() { map.removeLayer(startingData); };
         }
-        //map.removeLayer(forMap);
-        //forMap.clearLayers();
-        return forMap;
       });
-*/
+
       $("#Next-1").click(function() {
         highIndex = L.geoJson(parsedData, {
           color: "red",
           filter: hIndex
         }).addTo(map);
         zoom(highIndex);
-        //forMap.clearLayers();
-        startingData.clearLayers();  //remove previous layers
+        startingData.clearLayers();
+        clearSegments();
         showSlide1();
       });
 
